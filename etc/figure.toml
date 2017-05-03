@@ -1,0 +1,27 @@
+unix_socket = "/var/run/trianglefigure_go.sock"
+http_addr = ":3233"
+scheme = "https"
+
+[domain]
+domain_qing = "trianglefigure.com"
+
+[logs]
+access_log = false
+path = ""
+level = "trace"
+
+[i18n]
+default_language = "zh-CN"
+
+[database]
+user = "root"
+password = ""
+db_name = "figure"
+max_idle_conns = 300
+open_sql_log = false
+sql_log_path = "./sql.log"
+slow_log_timeout = 500  #毫秒
+
+[database.default]
+host = "127.0.0.1"
+port = 3306
