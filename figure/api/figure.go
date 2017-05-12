@@ -1,11 +1,12 @@
 package api
 
 import (
-	"fmt"
+	"net/http"
 
-	"github.com/denominatorzero/web"
-	"github.com/denominatorzero/web/inject"
 	"github.com/t3reezhou/figure/figure/bll"
+	"github.com/t3reezhou/figure/figure/status"
+	"github.com/t3reezhou/figure/figure/status/errors"
+	"github.com/t3reezhou/figure/figure/util"
 )
 
 type FigureHandler struct{}
@@ -14,50 +15,44 @@ func NewFigureHandler() *FigureHandler {
 	return &FigureHandler{}
 }
 
-func (h *FigureHandler) CreateFigure(c *web.AppContext) (map[string]interface{}, error) {
+func (h *FigureHandler) CreateFigure(rw http.ResponseWriter, r *http.Request) {
 	params := struct {
-		Id        int64  `web:"id,required"`
 		CompanyId int64  `web:"companyid,required"`
 		Name      string `web:"name,required"`
 	}{}
-	fmt.Printf(">>>>>>>>>>>>>%+v", c.Values)
-	if err := inject.Inject(c.Values, &params, "web"); err != nil {
-		return nil, err
+	if err := util.Inject(r.Context(), &params); err != nil {
+		util.Write(r, err)
+		return
 	}
-
-	if err := bll.FigureBllManager.CreateFigure(params.Id, params.CompanyId, params.Name); err != nil {
-		return nil, err
+	if err := bll.FigureBllManager.CreateFigure(2, params.CompanyId, params.Name); err != nil {
+		util.Write(r, err)
+		return
 	}
-	return map[string]interface{}{"result": "ok"}, nil
+	util.Write(r, status.OK)
 }
 
-//
-// func (h *FigureHandler) CreateFigure(params param.FigureParams) interface{} {
-// 	err := bll.FigureBllManager.CreateFigure(params.Creator, params.CompanyID, params.Name)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return status.OK
-// }
-// func (h *FigureHandler) GetFigures() interface{} {
-// 	figures, err := bll.FigureBllManager.GetFigures()
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return map[string]interface{}{"figures": figures}
-// }
-//
-// func (h *FigureHandler) GetFigureByID(params martini.Params) interface{} {
-// 	if _, ok := params["id"]; !ok {
-// 		return errors.ErrInvalidArgument
-// 	}
-// 	id, err := strconv.ParseInt(params["id"], 10, 64)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	figure, err := bll.FigureBllManager.GetFigure(id)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return figure
-// }
+func (h *FigureHandler) GetFigures(rw http.ResponseWriter, r *http.Request) {
+	figures, err := bll.FigureBllManager.GetFigures()
+	if err != nil {
+		util.Write(r, err)
+		return
+	}
+	util.Write(r, figures)
+}
+
+func (h *FigureHandler) GetFigureByID(rw http.ResponseWriter, r *http.Request) {
+	params := struct {
+		Id int64 `web:"id"`
+	}{}
+	if err := util.Inject(r.Context(), &params); err != nil {
+		util.Write(r, err)
+		return
+	}
+	figure, err := bll.FigureBllManager.GetFigure(params.Id)
+	if err != nil {
+		err = errors.Annotater(err, "context")
+		util.Write(r, err)
+		return
+	}
+	util.Write(r, figure)
+}

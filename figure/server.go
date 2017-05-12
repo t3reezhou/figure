@@ -30,7 +30,7 @@ func NewServer(cfg *cfg.Config) (*Server, error) {
 }
 
 func (s *Server) Run() {
-	log.Fatal(http.ListenAndServe(":8000", s.web))
+	log.Fatal(http.ListenAndServe(s.cfg.HttpAddr, s.web))
 }
 
 func (s *Server) Close() {

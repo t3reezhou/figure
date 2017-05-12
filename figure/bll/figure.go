@@ -3,6 +3,7 @@ package bll
 import (
 	"github.com/t3reezhou/figure/figure/dao"
 	"github.com/t3reezhou/figure/figure/model"
+	"github.com/t3reezhou/figure/figure/status/errors"
 )
 
 type FigureBll struct{}
@@ -14,7 +15,7 @@ func NewFigureBll() *FigureBll {
 func (b *FigureBll) GetFigure(id int64) (*model.Figure, error) {
 	figure, err := dao.FigureDaoManager.GetFigure(id)
 	if err != nil {
-		return nil, nil
+		return nil, errors.ErrFigureNotExist
 	}
 
 	return figure, nil
