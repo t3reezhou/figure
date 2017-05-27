@@ -15,7 +15,7 @@ type Error struct {
 	Message    string `json:"msg"`
 }
 
-func NewError(result string, code int) error {
+func NewError(result string, code int) *Error {
 	outPut := fmt.Sprintf("{\"Result\":\"%s\", \"msg\":\"%s\"}", result, result)
 	err := &Error{errors.NewErr(outPut), code, outPut, result, result}
 	err.SetLocation(2)

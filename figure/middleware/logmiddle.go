@@ -10,7 +10,7 @@ import (
 type LogMiddle struct{}
 
 const (
-	LOGMIDDLEKEY = "LogMiddleKey"
+	LOGMIDDLEKEY = "LOGMIDDLEKEY"
 	INFOCOL      = "\033[32;1m"
 	WARNOCOL     = "\033[33;1m"
 	OUTTIME      = 2 * time.Second // 2s

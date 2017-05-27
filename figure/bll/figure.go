@@ -36,3 +36,7 @@ func (b *FigureBll) CreateFigure(creator, companyid int64, name string) error {
 	}
 	return nil
 }
+
+func (b *FigureBll) UpdateFigure() error {
+	return nil
+}

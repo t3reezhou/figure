@@ -52,7 +52,10 @@ func (d *FigureDao) CreateFigure(creator, companyid int64, name string) error {
 	sql := fmt.Sprintf("INSERT INTO %s (name,creator,companyid,otime,ctime,mtime) VALUES('%s', %d, %d, %d, %d, %d)",
 		DefaultFigureTable, name, creator, companyid, now, now, now)
 	_, err := d.db.Exec(sql)
-	return err
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *FigureDao) GetFigure(productionid int64) (*model.Figure, error) {
@@ -73,4 +76,13 @@ func (d *FigureDao) GetFigures() ([]*model.Figure, error) {
 		return nil, err
 	}
 	return figures, nil
+}
+
+func (d *FigureDao) UpdateFigure() error {
+	sql := fmt.Sprintf("UPDATE %s SET(%s) WHERE %s", "", "", "")
+	_, err := d.db.Exec(sql)
+	if err != nil {
+		return err
+	}
+	return nil
 }

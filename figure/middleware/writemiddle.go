@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	WRITEMIDDLEKEY = "WriteMiddleKey"
+	WRITEMIDDLEKEY = "WRITEMIDDLEKEY"
 	ERRORCOL       = "\033[31;1m"
 	ORIGIN         = "\033[0m"
 )

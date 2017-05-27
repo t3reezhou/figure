@@ -56,3 +56,14 @@ func (h *FigureHandler) GetFigureByID(rw http.ResponseWriter, r *http.Request) {
 	}
 	util.Write(r, figure)
 }
+
+func (h *FigureHandler) UpdateFiguer(rw http.ResponseWriter, r *http.Request) {
+	params := struct {
+		Id int64 `web:"id"`
+	}{}
+	if err := util.Inject(r.Context(), &params); err != nil {
+		util.Write(r, err)
+		return
+	}
+	// figure,err :=
+}

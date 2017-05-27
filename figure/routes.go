@@ -9,7 +9,7 @@ import (
 )
 
 func RegistUrl(r *mux.Router) {
-	middles := []http.Handler{&middleware.LogMiddle{}, &middleware.ParseMiddle{}, &middleware.WriteMiddle{}}
+	middles := []http.Handler{&middleware.LogMiddle{}, &middleware.CSRFMiddle{}, &middleware.ParseMiddle{}, &middleware.WriteMiddle{}}
 	apiRouter := r.PathPrefix("/api").Subrouter()
 
 	figureHandler := api.NewFigureHandler()
@@ -19,6 +19,9 @@ func RegistUrl(r *mux.Router) {
 		Methods("GET")
 	apiRouter.Handle("/figures/{id:[0-9]+}", middleware.Middleware(figureHandler.GetFigureByID, middles)).
 		Methods("GET")
+	userHandler := api.NewUserHandler()
+	apiRouter.Handle("/login", middleware.Middleware(userHandler.Login, []http.Handler{&middleware.LogMiddle{}})).
+		Methods("POST")
 	// apiRouter.Handle("/figures/{id:[0-9]+}", middleware.Middleware(figureHandler.UpdateFigure,middles)).
 	// Methods("PUT")
 	// apiRouter.Handle("/figures/{id:[0-9]+}", middleware.Middleware(figureHandler.DeleteFigure,middles)).

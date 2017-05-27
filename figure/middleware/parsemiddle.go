@@ -9,7 +9,7 @@ import (
 	"github.com/t3reezhou/figure/lib/parse"
 )
 
-const PARSEMIDDLEKEY = "ParseMiddleKey"
+const PARSEMIDDLEKEY = "PARSEMIDDLEKEY"
 
 type ParseMiddle struct{}
 
